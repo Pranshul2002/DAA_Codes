@@ -2,42 +2,43 @@
 #include <stack>
 using namespace std;
 
-typedef struct adjacency_list{
+typedef struct adjacency_list {
 	int data;
 	int visit;
 	struct adjacency_list* right;
-}adjacency_list;
+} adjacency_list;
 
-adjacency_list* createNode(int data){
+adjacency_list* createNode(int data) {
 	adjacency_list* temp = (adjacency_list*)malloc(sizeof(adjacency_list));
 	temp->data = data;
 	temp->visit = 0;
 	temp->right = NULL;
+	return temp;
 }
 
-void display_adjacency_list(adjacency_list** list,int v){
-	for(int i=0;i<v;i++){
-		cout<<i<<" -> ";
+void display_adjacency_list(adjacency_list** list, int v) {
+	for (int i = 0; i < v; i++) {
+		cout << i << " -> ";
 		adjacency_list* a = list[i]->right;
 		int j = 10;
-		while(a != NULL && j--){
-			cout<<a->data<<" -> ";
+		while (a != NULL && j--) {
+			cout << a->data << " -> ";
 			a = a->right;
 		}
-		cout<<endl;
+		cout << endl;
 	}
 }
 
-adjacency_list** createGraphAdjacencyList(int v,int e,int arr[][2]){
+adjacency_list** createGraphAdjacencyList(int v, int e, int arr[][2]) {
 	adjacency_list** node = (adjacency_list**)malloc(sizeof(adjacency_list*)*v);
-	for(int i=0;i<v;i++){
+	for (int i = 0; i < v; i++) {
 		node[i] = createNode(i);
 	}
-	for(int i=0;i<e;i++){
-		int j=0;
+	for (int i = 0; i < e; i++) {
+		int j = 0;
 		adjacency_list** temp = node;
-		while(j<v){
-			if(temp[j]->data == arr[i][0]){
+		while (j < v) {
+			if (temp[j]->data == arr[i][0]) {
 				adjacency_list* temp1 = createNode(arr[i][1]);
 				temp1->right = temp[j]->right;
 				temp[j]->right = temp1;
@@ -45,7 +46,7 @@ adjacency_list** createGraphAdjacencyList(int v,int e,int arr[][2]){
 				temp1->right = temp[arr[i][1]]->right;
 				temp[arr[i][1]]->right = temp1;
 				break;
-			}else{
+			} else {
 				j++;
 			}
 		}
@@ -53,24 +54,24 @@ adjacency_list** createGraphAdjacencyList(int v,int e,int arr[][2]){
 	return node;
 }
 
-void depthFirstSearch(adjacency_list** list){
+void depthFirstSearch(adjacency_list** list) {
 	stack<int> s;
 	s.push(list[0]->data);
 	int count = 0;
-	while(!s.empty()){
+	while (!s.empty()) {
 		adjacency_list* a = list[s.top()];
 		adjacency_list* b = a;
-		if(list[b->data]->visit == 0){
+		if (list[b->data]->visit == 0) {
 			list[b->data]->visit = ++count;
-			cout<<b->data<<endl;
+			cout << b->data << endl;
 		}
-		while(a != NULL && list[a->data]->visit != 0){
+		while (a != NULL && list[a->data]->visit != 0) {
 			a = a->right;
 		}
-		if(a != NULL)
+		if (a != NULL)
 		{
 			s.push(a->data);
-		}else{
+		} else {
 			s.pop();
 		}
 
@@ -80,17 +81,17 @@ void depthFirstSearch(adjacency_list** list){
 
 
 int main()
-{	int v,e;
-	cin>>v>>e;
+{	int v, e;
+	cin >> v >> e;
 	int arr[e][2];
-	for(int i=0;i<e;i++){
-		int a,b;
-		cin>>a>>b;
+	for (int i = 0; i < e; i++) {
+		int a, b;
+		cin >> a >> b;
 		arr[i][0] = a;
 		arr[i][1] = b;
 	}
-	adjacency_list** list = createGraphAdjacencyList(v,e,arr);
-	display_adjacency_list(list,v);
+	adjacency_list** list = createGraphAdjacencyList(v, e, arr);
+	display_adjacency_list(list, v);
 	cout.flush();
 	depthFirstSearch(list);
 	return 0;
