@@ -20,8 +20,7 @@ void display_adjacency_list(adjacency_list** list, int v) {
 	for (int i = 0; i < v; i++) {
 		cout << i << " -> ";
 		adjacency_list* a = list[i]->right;
-		int j = 10;
-		while (a != NULL && j--) {
+		while (a != NULL) {
 			cout << a->data << " -> ";
 			a = a->right;
 		}
@@ -106,7 +105,6 @@ int main()
 	}
 	adjacency_list** list = createGraphAdjacencyList(v, e, arr);
 	display_adjacency_list(list, v);
-	cout.flush();
 	topologicalSearch(list, v);
 	return 0;
 }
